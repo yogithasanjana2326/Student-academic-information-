@@ -1,31 +1,26 @@
 
+
 const express = require("express");
 const mongoose = require("mongoose");
 const cors = require("cors");
 require("dotenv").config();
 
+const Student = require("./student");
+
 const app = express();
 
 app.use(cors());
 app.use(express.json());
+app.use(express.static(__dirname));
 
 // MongoDB Connection
 mongoose.connect(process.env.MONGO_URI)
-.then(() => console.log("MongoDB Connected Successfully"))
-.catch(err => console.log(err));
-
-// Student Schema
-const Student = mongoose.model("Student", {
-    name: String,
-    rollNo: String,
-    department: String,
-    marks: Number,
-    cgpa: Number
-});
+.then(() => console.log("MongoDB Connected"))
+.catch(err => console.log("Database Error:", err));
 
 // Home Route
 app.get("/", (req, res) => {
-    res.send("Student Academic Information System");
+    res.sendFile(__dirname + "/index.html");
 });
 
 // Add Student
@@ -33,9 +28,13 @@ app.post("/add", async (req, res) => {
     try {
         const student = new Student(req.body);
         await student.save();
-        res.send("Student Added Successfully");
+        res.json({
+            message: "Student Added Successfully"
+        });
     } catch (error) {
-        res.status(500).send(error.message);
+        res.status(500).json({
+            error: error.message
+        });
     }
 });
 
@@ -45,11 +44,15 @@ app.get("/students", async (req, res) => {
         const students = await Student.find();
         res.json(students);
     } catch (error) {
-        res.status(500).send(error.message);
+        res.status(500).json({
+            error: error.message
+        });
     }
 });
 
-// Server Port
-app.listen(3000, () => {
-    console.log("Server running on port 3000");
+// Server
+const PORT = process.env.PORT || 3000;
+
+app.listen(PORT, () => {
+    console.log("Server running on port " + PORT);
 });
