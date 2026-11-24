@@ -1,0 +1,114 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Student Academic Information</title>
+    <style>
+        body {
+            font-family: Arial;
+            background: #eef2ff;
+            margin: 0;
+            text-align: center;
+        }
+        header {
+            background: #263b80;
+            color: white;
+            padding: 20px;
+        }
+        .card {
+            background: white;
+            margin: 20px;
+            padding: 20px;
+            border-radius: 12px;
+        }
+        input {
+            padding: 12px;
+            margin: 8px;
+            width: 80%;
+        }
+        button {
+            background: #263b80;
+            color: white;
+            padding: 12px 25px;
+            border: none;
+            border-radius: 6px;
+        }
+        table {
+            width: 100%;
+            margin-top: 15px;
+        }
+        td, th {
+            padding: 8px;
+            border: 1px solid #ccc;
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <h1>Student Academic Information</h1>
+    <p>Student Management System</p>
+</header>
+
+<div class="card">
+    <h2>Enter Student Details</h2>
+
+    <input id="name" placeholder="Student Name">
+    <input id="roll" placeholder="Roll Number">
+    <input id="course" placeholder="Course">
+    <input id="marks" type="number" placeholder="Marks">
+
+    <br>
+    <button onclick="addStudent()">Add Student</button>
+</div>
+
+<div class="card">
+    <h2>Student Records</h2>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Roll No</th>
+                <th>Course</th>
+                <th>Marks</th>
+            </tr>
+        </thead>
+        <tbody id="records"></tbody>
+    </table>
+</div>
+
+<script>
+function addStudent() {
+    let name = document.getElementById("name").value;
+    let roll = document.getElementById("roll").value;
+    let course = document.getElementById("course").value;
+    let marks = document.getElementById("marks").value;
+
+    if (!name || !roll || !course || marks === "") {
+        alert("Please fill all details");
+        return;
+    }
+
+    if (marks < 0 || marks > 100) {
+        alert("Enter marks between 0 and 100");
+        return;
+    }
+
+    let table = document.getElementById("records");
+    let row = table.insertRow();
+
+    row.insertCell(0).textContent = name;
+    row.insertCell(1).textContent = roll;
+    row.insertCell(2).textContent = course;
+    row.insertCell(3).textContent = marks;
+
+    document.getElementById("name").value = "";
+    document.getElementById("roll").value = "";
+    document.getElementById("course").value = "";
+    document.getElementById("marks").value = "";
+}
+</script>
+
+</body>
+</html>
